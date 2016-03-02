@@ -1,12 +1,17 @@
 {
   "name": "redux-action-listeners",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Listen for actions in Redux",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["Redux", "Action"],
+  "authors": [
+    "Nick Baroni <nick@rhythnic.com> (https://github.com/rhythnic)"
+  ],
+  "bugs": {
+    "url" : "https://github.com/rhythnic/redux-action-listeners/issues"
+  },
   "license": "MIT"
 }
