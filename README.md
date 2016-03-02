@@ -40,8 +40,7 @@ const store = createStore(
 ## Motivation
 
 I wrote this middleware after some experience with both [redux-thunk](https://github.com/gaearon/redux-thunk) and [redux-saga](https://github.com/yelouafi/redux-saga).  I prefer saga to thunk because it's easier to decouple the logic, like
-in a true events system.  Subscribing to actions in redux-saga is a bit cumbersome, using one function to subscribe and another function as the handler, so I wrote some custom middleware similar to saga-redux, but more direct
-and with a simpler API.
+in a true events system.  Subscribing to actions in redux-saga is a bit cumbersome, using one function to subscribe and another function as the handler, so I wrote some custom middleware similar to redux-saga, but more direct and with a simpler API.
 
 ## Installation
 
