@@ -60,7 +60,7 @@ The listener groups, passed into the middelware, are plain objects.  Action type
 the keys, and action listeners are the values.
 
 ```
-const EXAMPLE_ACTION_TYPE_B = 'EXAMPLE_ACTION_TYPE_B';
+const ACTION_TYPE_B = 'ACTION_TYPE_B';
 
 function handle_A_and_C (action, store) {}
 function handle_B_and_C (action, store) {}
