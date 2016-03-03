@@ -12,7 +12,7 @@ import actionListenerMiddleware from 'redux-action-listeners'
 const listenersA = {
   // object key should match the action type
   ACTION_ONE(action, store) {
-    console.log(action);  // {type: '_ACTION_ONE'}
+    console.log(action);  // {type: 'ACTION_ONE'}
     store.dispatch({type: 'ACTION_TWO'});
   },
   // actions can by handled by multiple listeners (see listenersB.ACTION_TWO)
