@@ -1,6 +1,8 @@
-module.exports = function actionListenerMiddleware () {
+module.exports = function actionListenerMiddleware (listeners) {
 
-  var listeners = Array.prototype.slice.call(arguments);
+  listeners = Array.isArray(listeners)
+    ? listeners
+    : Array.prototype.slice.call(arguments);
 
   var actionListeners = listeners.reduce((result, listener) => {
     Object.keys(listener).forEach(type => {
