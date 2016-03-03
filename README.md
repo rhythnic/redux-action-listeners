@@ -32,6 +32,7 @@ const listenersB = {
 const store = createStore(
   reducer,
   applyMiddleware(
+    // pass in listeners as multiple arguments or one array of listeners
     actionListenerMiddleware(listenersA, listenersB)
   )
 )
@@ -45,6 +46,32 @@ in a true events system.  Subscribing to actions in redux-saga is a bit cumberso
 ## Installation
 
 npm install --save redux-action-listeners
+
+## API Reference
+
+### actionListenerMiddleware(listeners)
+This is the default export of 'redux-action-listeners', so you can name it anything.
+It accepts multiple listeners as parameters or one array.
+  * actionListenerMiddleware(listenersA, listenersB)
+  * actionListenerMiddleware([ listenersA, listenersB ])
+
+### actionListener objects
+The listener groups, passed into the middelware, are plain objects.  Action types are
+the keys, and action listeners are the values.
+
+```
+const EXAMPLE_ACTION_TYPE_B = 'EXAMPLE_ACTION_TYPE_B';
+
+function handle_A_and_C (action, store) {}
+function handle_B_and_C (action, store) {}
+
+export const actionListeners = {
+  ACTION_TYPE_A: handle_A_and_C,
+  [ACTION_TYPE_B]: handle_B_and_C,
+  ACTION_TYPE_C: [handle_A_and_C, handle_B_and_C]
+}
+```
+
 
 ## Contributors
 
