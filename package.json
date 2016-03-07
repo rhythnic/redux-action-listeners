@@ -1,6 +1,6 @@
 {
   "name": "redux-action-listeners",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Listen for actions in Redux",
   "main": "index.js",
   "repository": {
