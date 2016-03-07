@@ -3,6 +3,10 @@
   "version": "0.0.2",
   "description": "Listen for actions in Redux",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rhythnic/redux-action-listeners.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
