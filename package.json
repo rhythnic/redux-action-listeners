@@ -2,17 +2,33 @@
   "name": "redux-action-listeners",
   "version": "0.0.3",
   "description": "Listen for actions in Redux",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "jsnext:main": "es/index.js",
+  "files": [
+    "dist",
+    "lib",
+    "es",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/rhythnic/redux-action-listeners.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf lib dist es",
+    "test": "babel-tape-runner test/**/*.js",
+    "build:commonjs": "babel src --out-dir lib",
+    "build:es": "babel src --out-dir es",
+    "build:umd": "cross-env NODE_ENV=development webpack src/index.js dist/redux-action-listeners.js",
+    "build:umd:min": "cross-env NODE_ENV=production webpack src/index.js dist/redux-action-listeners.min.js",
+    "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
+    "prepublish": "npm run clean && npm test && npm run build"
   },
   "keywords": [
-    "Redux",
-    "Action"
+    "redux",
+    "action",
+    "listen",
+    "middleware"
   ],
   "authors": [
     "Nick Baroni <nick@rhythnic.com> (https://github.com/rhythnic)"
@@ -20,5 +36,25 @@
   "bugs": {
     "url": "https://github.com/rhythnic/redux-action-listeners/issues"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "npmName": "redux-action-listeners",
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js"
+      ]
+    }
+  ],
+  "devDependencies": {
+    "babel-cli": "^6.8.0",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-tape-runner": "^2.0.1",
+    "cross-env": "^1.0.7",
+    "rimraf": "^2.5.2",
+    "sinon": "^1.17.4",
+    "tape": "^4.5.1",
+    "lodash": "^4.11.2"
+  }
 }
