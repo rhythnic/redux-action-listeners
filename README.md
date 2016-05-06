@@ -1,9 +1,60 @@
 ## Synopsis
 
-This is Redux middleware for listening to actions.  The middleware is configured with actionListeners, and those action listeners are
-called after the reducer runs.  The action listeners receive the action and the store.
+Redux middleware for listening to actions.
 
-## Code Example
+## Installation
+
+```
+npm install --save redux-action-listeners
+```
+
+## Version >= 0.1.0
+
+### listener.js
+```
+export default {
+
+  // types can be an array of action types, or the string 'all'
+  types: [ 'ACTION_TYPE' ],
+
+  // setStore is optional
+  setStore (store) {
+    this.store = store;
+  },
+
+  // called when action from types is dispatched
+  handleAction ( action, dispatched, store ) {
+    // 'dispatched' is the result of calling next(action) in the middleware
+  }
+}
+```
+
+### store.js
+```
+import { createStore, applyMiddleware } from 'redux'
+import listen from 'redux-action-listeners'
+import listener from './listener'
+
+const store = createStore(
+  reducer,
+  applyMiddleware(
+    listen(listener)
+  )
+)
+```
+
+If you have multiple listeners, use the middleware multiple times.
+```
+const store = createStore(
+  reducer,
+  applyMiddleware(
+    listen(listenerA), listen(listenerB)
+  )
+)
+```
+
+
+## Version < 0.1.0
 
 ```
 import { createStore, applyMiddleware } from 'redux'
@@ -38,16 +89,7 @@ const store = createStore(
 )
 ```
 
-## Motivation
-
-I wrote this middleware after some experience with both [redux-thunk](https://github.com/gaearon/redux-thunk) and [redux-saga](https://github.com/yelouafi/redux-saga).  I prefer saga to thunk because it's easier to decouple the logic, like
-in a true events system.  Subscribing to actions in redux-saga is a bit cumbersome, using one function to subscribe and another function as the handler, so I wrote some custom middleware similar to redux-saga, but more direct and with a simpler API.
-
-## Installation
-
-npm install --save redux-action-listeners
-
-## API Reference
+## API Reference ( < 0.1.0 )
 
 ### actionListenerMiddleware(listeners)
 This is the default export of 'redux-action-listeners', so you can name it anything.
