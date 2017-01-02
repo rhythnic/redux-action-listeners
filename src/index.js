@@ -35,6 +35,10 @@ export default function actionListenerMiddleware(listener) {
 
       const dispatched = next(action);
 
+      if (typeof action === 'function' || typeof action.type !== 'string') {
+        return dispatched;
+      }
+
       return ( allTypes || (types.indexOf(action.type) > -1) )
         ? listener.handleAction(action, dispatched, store)
         : dispatched;
