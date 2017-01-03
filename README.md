@@ -8,37 +8,58 @@ Redux middleware for listening to actions.
 npm install --save redux-action-listeners
 ```
 
-## Version >= 0.1.0
+## Description
+Redux Action Listeners allows you to listen to Redux actions.  You also have the option
+of altering the return value of dispatch for that action.
 
-### listener.js
+## How it works
+Create an object that defines the listener interface.
+
+#### Listener Interface (my-listener.js)
 ```
 export default {
 
   // types can be an array of action types, or the string 'all'
   types: [ 'ACTION_TYPE' ],
 
-  // setStore is optional
+  // setStore (optional)
+  // in case you want a reference to store in your listener object
   setStore (store) {
     this.store = store;
   },
 
-  // called when action from types is dispatched
+  // handleAction is called when an action from types is dispatched
   handleAction ( action, dispatched, store ) {
-    // 'dispatched' is the result of calling next(action) in the middleware
+
   }
 }
 ```
 
-### store.js
+#### handleAction arguments
+  1) action
+    * the original action dispatched
+    * must be a plain object with a type (thunk actions not supported)
+  2) dispatched
+    * the action is intercepted by handleAction after it has been passed to the next middleware
+    * dispatched is the result of having called next(action)
+    * for more information on how middleware is composed, see [the redux middleware docs](http://redux.js.org/docs/advanced/Middleware.html)
+  3) store
+    * a reference to the store
+
+#### handleAction return value
+If handleAction is called, whatever you return from it will be the return value of dispatching the action.
+
+
+### store.js (where you configure your redux store)
 ```
 import { createStore, applyMiddleware } from 'redux'
 import listen from 'redux-action-listeners'
-import listener from './listener'
+import MyListener from './my-listener'
 
 const store = createStore(
   reducer,
   applyMiddleware(
-    listen(listener)
+    listen(MyListener)
   )
 )
 ```
@@ -48,71 +69,77 @@ If you have multiple listeners, use the middleware multiple times.
 const store = createStore(
   reducer,
   applyMiddleware(
-    listen(listenerA), listen(listenerB)
+    listen(ListenerA), listen(ListenerB)
   )
 )
 ```
 
 
-## Version < 0.1.0
+## Listener Examples
 
+### Async listener
+You can return a promise from the handleAction method.
 ```
-import { createStore, applyMiddleware } from 'redux'
-import actionListenerMiddleware from 'redux-action-listeners'
+// fetch-listener.js
 
-const listenersA = {
-  // object key should match the action type
-  ACTION_ONE(action, store) {
-    console.log(action);  // {type: 'ACTION_ONE'}
-    store.dispatch({type: 'ACTION_TWO'});
-  },
-  // actions can by handled by multiple listeners (see listenersB.ACTION_TWO)
-  ACTION_TWO(action, store) {}
-}
+export default {
+  types: [ 'FETCH' ],
 
-const listenersB = {
-  // action listeners can be an array of action listeners
-  ACTION_TWO: [
-    (action, store) => {
-      console.log(action);  // {type: 'ACTION_TWO'}
-    },
-    (action, store) => {}
-  ]
-}
-
-const store = createStore(
-  reducer,
-  applyMiddleware(
-    // pass in listeners as multiple arguments or one array of listeners
-    actionListenerMiddleware(listenersA, listenersB)
-  )
-)
-```
-
-## API Reference ( < 0.1.0 )
-
-### actionListenerMiddleware(listeners)
-This is the default export of 'redux-action-listeners', so you can name it anything.
-It accepts multiple listeners as parameters or one array.
-  * actionListenerMiddleware(listenersA, listenersB)
-  * actionListenerMiddleware([ listenersA, listenersB ])
-
-### actionListener objects
-The listener groups, passed into the middelware, are plain objects.  Action types are
-the keys, and action listeners are the values.
-
-```
-const ACTION_TYPE_B = 'ACTION_TYPE_B';
-
-function handle_A_and_C (action, store) {}
-function handle_B_and_C (action, store) {}
-
-export const actionListeners = {
-  ACTION_TYPE_A: handle_A_and_C,
-  [ACTION_TYPE_B]: handle_B_and_C,
-  ACTION_TYPE_C: [handle_A_and_C, handle_B_and_C]
+  handleAction (action) {
+    return fetch(action.url, action.init).then(response => response.json())
+  }
 }
 ```
+
+Usage
+```
+// actions.js
+export function fetchCurrentUser(userId) {
+  const action = {
+    type: 'FETCH',
+    url: `https://mydomain.com/api/users/${userId}`
+  }
+  return dispatch => dispatch(action).then(user => {
+    console.log(user.displayName)
+  })
+}
+```
+
+
+### Event Emitter
+```
+// action-emitter.js
+
+// node's EventEmitter class
+import EventEmitter from 'events';
+
+export default class ActionEmitter extends EventEmitter {
+  constructor(...args) {
+    super(...args);
+    this.types = 'all';
+  }
+  handleAction(action, dispatched, store) {
+    this.emit(action.type, action, store);
+    return dispatched;
+  }
+}
+```
+
+Usage
+```
+import ActionEmitter from '../action-emitter';
+
+ActionEmitter.on('MY_REDUX_ACTION', (action, store) => {
+  // do something
+  // store.dispatch({ type: 'ANOTHER_ACTION' });
+})
+```
+
+
+## Disclaimer
+I made this redux middleware a long time ago, and I'm not currently using it.
+I've never used or tested the event emitter example.
+
 
 
 ## Contributors
