@@ -1,7 +1,7 @@
 {
   "name": "redux-action-listeners",
   "description": "Listen for actions in Redux",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "lib/index.js",
   "authors": [
     "Nick Baroni <nick@rhythnic.com>"
