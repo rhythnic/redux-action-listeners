@@ -25,7 +25,6 @@
     ".babelrc",
     ".gitignore",
     "webpack.config.js",
-    "bower.json",
     "package.json"
-  ],
+  ]
 }

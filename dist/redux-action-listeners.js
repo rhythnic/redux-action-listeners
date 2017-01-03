@@ -100,7 +100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        var dispatched = next(action);
 
-	        return allTypes || types.indexOf(action.type) > -1 ? listener.handleAction(action, dispatched, store) : dispatched;
+	        return action.type && (allTypes || types.indexOf(action.type) > -1) ? listener.handleAction(action, dispatched, store) : dispatched;
 	      };
 	    };
 	  };
