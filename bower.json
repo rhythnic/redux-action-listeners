@@ -1,0 +1,31 @@
+{
+  "name": "redux-action-listeners",
+  "description": "Listen for actions in Redux",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "authors": [
+    "Nick Baroni <nick@rhythnic.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "redux",
+    "action",
+    "listen",
+    "middleware"
+  ],
+  "moduleType": [
+    "globals",
+    "node",
+    "es6"
+  ],
+  "homepage": "https://github.com/rhythnic/redux-action-listeners",
+  "ignore": [
+    "src",
+    "test",
+    ".babelrc",
+    ".gitignore",
+    "webpack.config.js",
+    "bower.json",
+    "package.json"
+  ],
+}
